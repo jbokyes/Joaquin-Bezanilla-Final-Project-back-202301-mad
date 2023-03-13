@@ -1,5 +1,5 @@
 export interface Repo<U> {
-  query(): Promise<U[]>;
+  queryAll(): Promise<U[]>;
   queryId(_id: string): Promise<U>;
   search(query: { key: string; value: unknown }): Promise<U[]>;
   create(_info: Partial<U>): Promise<U>;
