@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import { userRouter } from './routers/user.router.js';
+import { errorsMiddleware } from './middlewares/errors.middlewares.js';
 
 const debug = createDebug('latino-foods:app');
 debug('holaa');
@@ -25,3 +26,4 @@ app.get('/', (_req, resp) => {
     },
   });
 });
+app.use(errorsMiddleware);
