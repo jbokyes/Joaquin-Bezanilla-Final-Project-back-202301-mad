@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env DEBUG=Latino* PORT=4200 node ./dist/index.js -w",
-    "start:mon": "cross-env DEBUG=W6* PORT=4200 nodemon ./dist/index.js",
+    "start": "cross-env DEBUG=latino-foods* PORT=4200 node ./dist/index.js -w",
+    "start:mon": "cross-env DEBUG=Latino* PORT=4200 nodemon ./dist/index.js",
     "build": "tsc -w",
     "test": "jest --watchAll --coverage",
     "test:prod": "jest --watchAll --coverage --watchAll=false"

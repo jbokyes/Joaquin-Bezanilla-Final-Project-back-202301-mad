@@ -4,8 +4,8 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import { userRouter } from './routers/user.router.js';
 
-const debug = createDebug('Latino:app');
-debug('Latino:app');
+const debug = createDebug('latino-foods:app');
+debug('holaa');
 export const app = express();
 app.disable('x-powered-by');
 
@@ -20,7 +20,7 @@ app.get('/', (_req, resp) => {
   resp.json({
     info: "Bootcamp API's",
     endpoints: {
-      things: '/things',
+      foods: '/foods',
       users: '/users',
     },
   });
