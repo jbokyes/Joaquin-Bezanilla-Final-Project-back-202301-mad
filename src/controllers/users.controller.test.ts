@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { Auth } from '../helpers/auth';
-import { UsersController } from './users.controller';
+import { Auth } from '../helpers/auth.js';
+import { UsersController } from './users.controller.js';
 
 describe('Given the UsersController', () => {
   const mockRepoUsers = {
@@ -69,9 +69,6 @@ describe('Given the UsersController', () => {
           name: 'test',
           email: 'test',
           passwd: '111',
-        },
-        info: {
-          id: '111',
         },
       } as unknown as Request;
 
