@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { Food } from '../entities/food';
 
 const foodSchema = new Schema<Food>({
@@ -25,3 +25,5 @@ const foodSchema = new Schema<Food>({
   },
   // Puede que falte el creador del plato
 });
+
+export const FoodModel = model('Food', foodSchema, 'foods');
