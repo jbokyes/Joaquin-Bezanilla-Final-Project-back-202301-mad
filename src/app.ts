@@ -4,6 +4,7 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 
 const debug = createDebug('Latino:app');
+debug('Latino:app');
 export const app = express();
 app.disable('x-powered-by');
 const corsOptions = {

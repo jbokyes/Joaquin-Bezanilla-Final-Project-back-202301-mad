@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { Auth } from '../helpers/auth';
 import { UsersController } from './users.controller';
 jest.mock('../helpers/auth');

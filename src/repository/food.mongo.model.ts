@@ -1,4 +1,4 @@
-import { model, Schema, SchemaTypes } from 'mongoose';
+import { Schema } from 'mongoose';
 import { Food } from '../entities/food';
 
 const foodSchema = new Schema<Food>({

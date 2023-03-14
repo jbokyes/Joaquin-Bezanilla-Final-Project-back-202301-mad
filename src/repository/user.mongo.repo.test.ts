@@ -1,4 +1,3 @@
-import { HTTPError } from '../error/error';
 import { UserModel } from './user.mongo.model';
 import { UsersMongoRepo } from './user.mongo.repo';
 
