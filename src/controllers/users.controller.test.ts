@@ -72,7 +72,7 @@ describe('Given the UsersController', () => {
       } as unknown as Request;
 
       mockRepoUsers.search.mockResolvedValue([1]);
-      Auth.compare = jest.fn().mockResolvedValue(false);
+      Auth.compare = jest.fn().mockResolvedValue(true);
       await controller.login(req, resp, next);
       expect(mockRepoUsers.search).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();

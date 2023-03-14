@@ -9,9 +9,9 @@ export interface PayloadToken extends JwtPayload {
   role: string;
 }
 
-const salt = 8;
+const salt = 10;
 
-export class Auth {
+export abstract class Auth {
   static createJWT(payload: PayloadToken) {
     const JWT = jwt.sign(payload, config.jwtSecret as string);
     if (!config.jwtSecret) console.log('config undefined');
