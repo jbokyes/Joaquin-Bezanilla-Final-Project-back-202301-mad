@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { Auth } from '../helpers/auth.js';
-import { UsersController } from './users.controller.js';
+import { Auth } from '../helpers/auth';
+import { UsersController } from './users.controller';
+jest.mock('../helpers/auth');
 
 describe('Given the UsersController', () => {
   const mockRepoUsers = {
@@ -21,7 +22,6 @@ describe('Given the UsersController', () => {
 
   const req = {} as unknown as Request;
   const next = jest.fn();
-  jest.mock('../helpers/auth');
 
   /*beforeEach(() => {
     jest.clearAllMocks();
