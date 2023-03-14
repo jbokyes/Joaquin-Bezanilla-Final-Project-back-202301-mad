@@ -43,4 +43,19 @@ export class UsersController {
       next(error);
     }
   }
+  async register(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('post! (register)');
+      if (!req.body.email || !req.body.passwd) {
+        throw new HTTPError(403, 'Unauthorized', 'Invalid email or password');
+      }
+      const data = await this.repo.create(req.body);
+      console.log(data);
+      resp.json({
+        results: [data],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

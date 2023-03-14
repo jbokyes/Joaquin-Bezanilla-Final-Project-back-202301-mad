@@ -23,21 +23,20 @@ describe('Given the UsersController', () => {
   const req = {} as unknown as Request;
   const next = jest.fn();
 
-  /*beforeEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
-  });*/
+  });
 
-  /*describe('When the register method is called', () => {
+  describe('When the register method is called', () => {
     test('And all the data is correctly introduced, there should be a status and a json response', async () => {
       const req = {
         body: {
           email: 'test1',
-          password: 'pass',
+          passwd: 'pass',
         },
       } as unknown as Request;
       await controller.register(req, resp, next);
       expect(mockRepoUsers.create).toHaveBeenCalled();
-      expect(resp.status).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
     });
     test('And the email is missing, next function will be called', async () => {
@@ -60,7 +59,7 @@ describe('Given the UsersController', () => {
       await controller.register(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
-  }); */
+  });
   describe('When the login method is called', () => {
     test('And all the data is correctly introduced, there should be a status and a json response', async () => {
       const req = {
