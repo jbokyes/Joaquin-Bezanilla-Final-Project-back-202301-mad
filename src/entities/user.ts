@@ -4,7 +4,8 @@ export type User = {
   id: string;
   email: string;
   passwd: string;
-  name: string;
+  username: string;
   lastName: string;
   addFoods: Food[];
+  role?: string;
 };

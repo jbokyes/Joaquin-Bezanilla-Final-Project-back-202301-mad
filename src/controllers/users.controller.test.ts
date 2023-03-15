@@ -61,7 +61,7 @@ describe('Given the UsersController', () => {
       const req = {
         body: {
           id: '2',
-          name: 'test',
+          username: 'test',
           email: 'test',
           passwd: '111',
         },

@@ -55,8 +55,8 @@ export class UsersController {
       if (!req.body.email || !req.body.passwd) {
         throw new HTTPError(403, 'Unauthorized', 'Invalid email or password');
       }
-      console.log(req.body.email, req.body.passwd, req.body.name);
-      console.log(await Auth.hash(req.body.passwd));
+      console.log(req.body.email, req.body.passwd, req.body.username);
+      // console.log(await Auth.hash(req.body.passwd));
       req.body.passwd = await Auth.hash(req.body.passwd);
       req.body.addFoods = [];
       const data = await this.repo.create(req.body);
