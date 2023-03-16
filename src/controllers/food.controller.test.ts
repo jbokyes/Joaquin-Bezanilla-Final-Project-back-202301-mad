@@ -37,20 +37,18 @@ describe('Given the controller FoodsController', () => {
       expect(resp.json).toHaveBeenCalled();
     });
 
-    /*Test not working!!
     test('Then if there is req.body.region is All, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
-          name: 'test',
-          region: 'All',
+          region: 'none',
         },
       } as unknown as Request;
-
-      await controller.post(req, resp, next);
-      expect(resp.status).toHaveBeenCalled();
-      expect(resp.json).toHaveBeenCalled();
-      expect(mockFoodRepo.queryAll).toHaveBeenCalled();
-    });*/
+      (mockFoodRepo.search as jest.Mock).mockRejectedValueOnce(
+        'No guitar info'
+      );
+      await controller.getAll(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
 
     test('Then if there is no food region in the req.body, it should be catch the error and next function have been called', async () => {
       const req = {

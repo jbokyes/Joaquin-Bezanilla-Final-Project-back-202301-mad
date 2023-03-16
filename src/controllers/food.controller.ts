@@ -34,8 +34,16 @@ export class FoodsController {
       if (pageNumber < 1 || pageNumber > 10)
         throw new HTTPError(400, 'Wrong page number', 'Page <1 or >10');
       const region = req.query.region || 'All';
-      throw new HTTPError(400, 'Wrong region', 'Non existing region');
-      let filteredFood: Food[];
+      if (
+        region !== 'Chile' &&
+        region !== 'Argentina' &&
+        region !== 'Brazil' &&
+        region !== 'Mexico' &&
+        region !== 'Peru' &&
+        region !== 'All'
+      )
+        throw new HTTPError(400, 'Wrong region', 'Non existing region');
+      var filteredFood: Food[];
       if (region === 'All') {
         filteredFood = await this.foodRepo.queryAll();
       } else {
