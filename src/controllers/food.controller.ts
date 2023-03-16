@@ -8,6 +8,7 @@ const debug = createDebug('latino-foods:food-controller');
 export class FoodsController {
   constructor(public foodRepo: Repo<Food>) {
     this.foodRepo = foodRepo;
+    debug('Food controller!');
   }
 
   async post(req: Request, resp: Response, next: NextFunction) {

@@ -5,7 +5,7 @@ import { HTTPError } from '../error/error.js';
 import { Auth, PayloadToken } from '../helpers/auth.js';
 import { Repo } from '../repository/repo.interface';
 
-const debug = createDebug('Latino:users-controller');
+const debug = createDebug('latino-foods:users-controller');
 
 export class UsersController {
   constructor(public repo: Repo<User>) {
