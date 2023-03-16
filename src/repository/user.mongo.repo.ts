@@ -42,7 +42,7 @@ export class UsersMongoRepo implements Repo<User> {
   }
 
   async update(info: Partial<User>): Promise<User> {
-    debug('update ' + info.name);
+    debug('update ' + info.username);
     const data = await UserModel.findByIdAndUpdate(info.id, info, {
       new: true,
     });
