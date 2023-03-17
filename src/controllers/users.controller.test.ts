@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
+import { Food } from '../entities/food';
 import { Auth } from '../helpers/auth';
+import { RequestWithToken } from '../interceptors/interceptors';
+import { Repo } from '../repository/repo.interface';
+import { UsersMongoRepo } from '../repository/user.mongo.repo';
 import { UsersController } from './users.controller';
 jest.mock('../helpers/auth');
-
 describe('Given the UsersController', () => {
   const mockRepoUsers = {
     queryAll: jest.fn(),
@@ -12,17 +15,16 @@ describe('Given the UsersController', () => {
     update: jest.fn(),
     delete: jest.fn(),
   };
-
-  const controller = new UsersController(mockRepoUsers);
-
+  const mockRepoFoods = {
+    queryId: jest.fn(),
+  } as unknown as Repo<Food>;
+  const controller = new UsersController(mockRepoUsers, mockRepoFoods);
   const resp = {
     status: jest.fn(),
     json: jest.fn(),
   } as unknown as Response;
-
   const req = {} as unknown as Request;
   const next = jest.fn();
-
   describe('When the register method is called', () => {
     test('And all the data is correctly introduced, there should be a status and a json response', async () => {
       const req = {
@@ -66,7 +68,6 @@ describe('Given the UsersController', () => {
           passwd: '111',
         },
       } as unknown as Request;
-
       mockRepoUsers.search.mockResolvedValue([1]);
       Auth.compare = jest.fn().mockResolvedValue(true);
       await controller.login(req, resp, next);
@@ -116,6 +117,128 @@ describe('Given the UsersController', () => {
       } as unknown as Request;
       mockRepoUsers.search.mockRejectedValue('error');
       await controller.login(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
+  describe('When addFood method is called', () => {
+    test('Then if the user information is complete, it should return resp.status and resp.json', async () => {
+      const req = {
+        tokenInfo: {
+          id: '1',
+        },
+        params: {
+          id: '2',
+        },
+      } as unknown as RequestWithToken;
+      (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({
+        addFoods: [{ id: '10' }, { id: '20' }],
+      });
+      (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ id: '2' });
+      await controller.addFavouriteFood(req, resp, next);
+      expect(mockRepoUsers.update).toHaveBeenCalled();
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+  });
+  test('Then if there is no tokenInfo in the req information, it should catch an error and call a next function', async () => {
+    const req = {
+      tokenInfo: undefined,
+    } as unknown as RequestWithToken;
+    await controller.addFavouriteFood(req, resp, next);
+    expect(next).toHaveBeenCalled();
+  });
+  test('Then if there is no food ID in req params, it should catch an error and call a next function', async () => {
+    const req = {
+      tokenInfo: {
+        id: '1',
+      },
+      params: {
+        id: undefined,
+      },
+    } as unknown as RequestWithToken;
+    await controller.addFavouriteFood(req, resp, next);
+    expect(next).toHaveBeenCalled();
+  });
+  test('Then if the id of the food dish is incorrect and can not be found in the food repo, it should catch an error and the next function have been called', async () => {
+    const req = {
+      tokenInfo: {
+        id: '30',
+      },
+      params: {
+        id: '40',
+      },
+    } as unknown as RequestWithToken;
+    (mockRepoFoods.queryId as jest.Mock).mockResolvedValue(undefined);
+    await controller.addFavouriteFood(req, resp, next);
+    expect(next).toHaveBeenCalled();
+  });
+  test('Then if the food is already added to addFoods, it should catch the error and next function have been called', async () => {
+    const req = {
+      tokenInfo: {
+        id: '10',
+      },
+      params: {
+        id: '10',
+      },
+    } as unknown as RequestWithToken;
+    (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({
+      addFoods: [{ id: '10' }],
+    });
+    (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({ id: '10' });
+
+    await controller.addFavouriteFood(req, resp, next);
+    expect(next).toHaveBeenCalled();
+  });
+  describe('When removeFood method is called', () => {
+    test('Then if the user information is completed, it should return the resp.status and resp.json', async () => {
+      const req = {
+        tokenInfo: {
+          id: '1',
+        },
+        params: {
+          id: '2',
+        },
+      } as unknown as RequestWithToken;
+      (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({
+        addFoods: [{ id: '1' }, { id: '2' }],
+      });
+      (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ id: '2' });
+      await controller.removeFavouriteFood(req, resp, next);
+
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+    test('Then if there is no tokenInfo in the req information, it should catch an error and next function have been called', async () => {
+      const req = {
+        tokenInfo: undefined,
+      } as unknown as RequestWithToken;
+      await controller.removeFavouriteFood(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('Then if there is no food id in the req.params, it should catch an error and next function have been called', async () => {
+      const req = {
+        tokenInfo: {
+          id: '1',
+        },
+        params: {
+          id: undefined,
+        },
+      } as unknown as RequestWithToken;
+      await controller.removeFavouriteFood(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('Then if the id of the food dish is incorrect and can not be found in the repo, it should catch an error and the next function should be called', async () => {
+      const req = {
+        tokenInfo: {
+          id: '1',
+        },
+        params: {
+          id: '20',
+        },
+      } as unknown as RequestWithToken;
+      (mockRepoFoods.queryId as jest.Mock).mockResolvedValue(undefined);
+      await controller.removeFavouriteFood(req, resp, next);
+      expect(mockRepoUsers.update).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
   });
