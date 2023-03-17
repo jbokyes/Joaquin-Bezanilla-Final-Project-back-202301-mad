@@ -80,4 +80,33 @@ export class FoodsController {
       next(error);
     }
   }
+  async edit(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('Edit method - food controller');
+      if (!req.params.foodId)
+        throw new HTTPError(404, 'Not found', 'Food id not found in params');
+      req.body.id = req.params.foodId;
+      const foodData = await this.foodRepo.update(req.body);
+      resp.status(201);
+      resp.json({
+        results: [foodData],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async delete(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('Delete-method food controller');
+      if (!req.params.foodId)
+        throw new HTTPError(404, 'Not found', 'Food id not found in params');
+      await this.foodRepo.delete(req.params.foodId);
+      resp.status(201);
+      resp.json({
+        results: [],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
