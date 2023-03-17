@@ -124,7 +124,7 @@ describe('Given the controller FoodsController', () => {
       expect(next).toHaveBeenCalled();
     });
 
-    test('Then if req.body.style is not Electric or Acoustic or All, it should be catch the error and next function have been called', async () => {
+    test('Then if req.body.region is not any of the available countries or All, it should be catch the error and next function have been called', async () => {
       const req = {
         query: {
           region: 'test',
@@ -155,8 +155,56 @@ describe('Given the controller FoodsController', () => {
           id: undefined,
         },
       } as unknown as Request;
-
       await controller.getId(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
+  describe('When the edit method is called', () => {
+    test('Then if the food information is completed, it should return the resp.status and resp.json', async () => {
+      const req = {
+        body: {
+          id: '50',
+        },
+        params: {
+          foodId: '50',
+        },
+      } as unknown as Request;
+
+      await controller.edit(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+    test('Then if there is no foodId in the req.params, it should catch the error and call a next function', async () => {
+      const req = {
+        params: {
+          foodId: undefined,
+        },
+      } as unknown as Request;
+      await controller.edit(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
+  describe('When the delete method is called', () => {
+    test('Then if the user information is complete, it should return the resp.status and resp.json', async () => {
+      const req = {
+        params: {
+          foodId: '30',
+        },
+      } as unknown as Request;
+
+      await controller.delete(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+
+    test('Then if there is no the guitar id in the req.params, it should be catch the error and next function have been called', async () => {
+      const req = {
+        params: {
+          foodId: undefined,
+        },
+      } as unknown as Request;
+
+      await controller.delete(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
   });
