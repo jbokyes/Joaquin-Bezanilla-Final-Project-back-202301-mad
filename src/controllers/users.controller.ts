@@ -24,7 +24,6 @@ export class UsersController {
         key: 'email',
         value: req.body.email,
       });
-
       if (!data.length)
         throw new HTTPError(401, 'Unauthorized', 'Email not found');
       debug('!datalength error');
