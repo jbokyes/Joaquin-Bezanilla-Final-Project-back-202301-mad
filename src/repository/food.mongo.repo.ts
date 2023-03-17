@@ -7,7 +7,7 @@ const debug = createDebug('latino-foods:food-repo');
 
 export class FoodMongoRepo implements Repo<Food> {
   constructor() {
-    debug('guitars-repo-instanced');
+    debug('foods-repo-instanced');
   }
 
   async queryAll(): Promise<Food[]> {
@@ -31,7 +31,7 @@ export class FoodMongoRepo implements Repo<Food> {
 
   async update(food: Partial<Food>): Promise<Food> {
     debug('update-method');
-    const data = await FoodModel.findByIdAndUpdate(food.id, food, {
+    const data = await FoodModel.findByIdAndUpdate(food.foodId, food, {
       new: true,
     }).exec();
     if (!data) throw new HTTPError(404, 'Not found', 'ID not found in update');

@@ -12,12 +12,12 @@ describe('Given the repository FoodMongoRepo', () => {
   });
 
   describe('When the repository is instanced', () => {
-    test('Then, the repo should be instance of GuitarsMongoRepo', () => {
+    test('Then, the repo should be instance of FoodsMongoRepo', () => {
       expect(repo).toBeInstanceOf(FoodMongoRepo);
     });
   });
   describe('When the read method is used', () => {
-    test('Then it should return the mock result of the guitars', async () => {
+    test('Then it should return the mock result of the foods', async () => {
       const mockPopulateValue = [{ id: '1' }, { id: '2' }];
       (FoodModel.find as jest.Mock).mockImplementation(() =>
         mockPopulateFunction(mockPopulateValue)
@@ -73,7 +73,7 @@ describe('Given the repository FoodMongoRepo', () => {
       const result = await repo.update(mockFood);
       expect(result).toEqual({ region: 'test' });
     });
-    test('Then if the findByIdAndUpdate method resolve value to null, it should throw an Error', async () => {
+    test('Then if the findByIdAndUpdate method resolves value to null, it should throw an Error', async () => {
       const mockPopulateValue = null;
 
       (FoodModel.findByIdAndUpdate as jest.Mock).mockImplementation(() =>
