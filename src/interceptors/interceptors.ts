@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import createDebug from 'debug';
-import { Auth, PayloadToken } from '../helpers/auth';
-import { HTTPError } from '../error/error';
+import { Auth, PayloadToken } from '../helpers/auth.js';
+import { HTTPError } from '../error/error.js';
 
 const debug = createDebug('latino-foods:interceptors');
 export interface RequestWithToken extends Request {
