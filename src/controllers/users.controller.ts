@@ -82,7 +82,7 @@ export class UsersController {
       if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Didnt find food ID params');
       const foodToAdd = await this.foodRepo.queryId(req.params.id);
-      if (actualUser.addFoods.find((item) => item.id === foodToAdd.id))
+      if (actualUser.addFoods.find((item) => item.foodId === foodToAdd.foodId))
         throw new HTTPError(
           405,
           'This food plate already exists',
@@ -115,7 +115,7 @@ export class UsersController {
       if (!foodToRemove)
         throw new HTTPError(404, 'Food not found', 'Food ID not found');
       actualUser.addFoods = actualUser.addFoods.filter(
-        (item) => item.id !== foodToRemove.id
+        (item) => item.foodId !== foodToRemove.foodId
       );
       await this.userRepo.update(actualUser);
       resp.json({

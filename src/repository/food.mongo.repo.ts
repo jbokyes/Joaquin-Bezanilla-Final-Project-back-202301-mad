@@ -31,7 +31,7 @@ export class FoodMongoRepo implements Repo<Food> {
 
   async update(food: Partial<Food>): Promise<Food> {
     debug('update-method');
-    const data = await FoodModel.findByIdAndUpdate(food.id, food, {
+    const data = await FoodModel.findByIdAndUpdate(food.foodId, food, {
       new: true,
     }).exec();
     if (!data) throw new HTTPError(404, 'Not found', 'ID not found in update');
