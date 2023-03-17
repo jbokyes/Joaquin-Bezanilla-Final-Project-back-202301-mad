@@ -17,6 +17,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use('/users', userRouter);
+app.use('/foods', userRouter);
 app.get('/', (_req, resp) => {
   resp.json({
     info: "Bootcamp API's",

@@ -57,6 +57,7 @@ export class UsersController {
         throw new HTTPError(403, 'Unauthorized', 'Invalid email or password');
       }
       console.log(req.body.email, req.body.passwd, req.body.username);
+      // Console log de verificación
       // console.log(await Auth.hash(req.body.passwd));
       req.body.passwd = await Auth.hash(req.body.passwd);
       req.body.addFoods = [];

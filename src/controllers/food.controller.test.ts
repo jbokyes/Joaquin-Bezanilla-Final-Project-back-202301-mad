@@ -43,9 +43,7 @@ describe('Given the controller FoodsController', () => {
           region: 'none',
         },
       } as unknown as Request;
-      (mockFoodRepo.search as jest.Mock).mockRejectedValueOnce(
-        'No guitar info'
-      );
+      (mockFoodRepo.search as jest.Mock).mockRejectedValueOnce('No food info');
       await controller.getAll(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
@@ -149,7 +147,7 @@ describe('Given the controller FoodsController', () => {
       expect(resp.json).toHaveBeenCalled();
     });
 
-    test('Then if there is no the guitar id in the req.params, it should be catch the error and next function have been called', async () => {
+    test('Then if there is no foodId in the req.params, it should catch an error and next function have been called', async () => {
       const req = {
         params: {
           id: undefined,
@@ -197,7 +195,7 @@ describe('Given the controller FoodsController', () => {
       expect(resp.json).toHaveBeenCalled();
     });
 
-    test('Then if there is no the guitar id in the req.params, it should be catch the error and next function have been called', async () => {
+    test('Then if there is no the foodId in the req.params, it should catch an error and next function be', async () => {
       const req = {
         params: {
           foodId: undefined,
