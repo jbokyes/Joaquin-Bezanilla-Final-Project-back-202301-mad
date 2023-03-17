@@ -123,16 +123,16 @@ describe('Given the UsersController', () => {
     test('Then if the user information is complete, it should return resp.status and resp.json', async () => {
       const req = {
         tokenInfo: {
-          id: '1',
+          id: '10',
         },
         params: {
-          id: '2',
+          id: '20',
         },
       } as unknown as RequestWithToken;
       mockRepoUsers.queryId.mockResolvedValue({
-        addFoods: [{ id: '10' }, { id: '20' }],
+        addFoods: [{ id: '1' }],
       });
-      (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ id: '2' });
+      (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ foodId: '10' });
       await controller.addFavouriteFood(req, resp, next);
       expect(mockRepoUsers.update).toHaveBeenCalled();
       expect(resp.status).toHaveBeenCalled();
