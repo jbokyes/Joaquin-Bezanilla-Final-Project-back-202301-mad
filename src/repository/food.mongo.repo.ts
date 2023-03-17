@@ -7,7 +7,7 @@ const debug = createDebug('latino-foods:food-repo');
 
 export class FoodMongoRepo implements Repo<Food> {
   constructor() {
-    debug('guitars-repo-instanced');
+    debug('foods-repo-instanced');
   }
 
   async queryAll(): Promise<Food[]> {
