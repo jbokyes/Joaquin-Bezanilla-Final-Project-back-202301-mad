@@ -3,7 +3,6 @@ import { Food } from '../entities/food';
 import { Auth } from '../helpers/auth';
 import { RequestWithToken } from '../interceptors/interceptors';
 import { Repo } from '../repository/repo.interface';
-import { UsersMongoRepo } from '../repository/user.mongo.repo';
 import { UsersController } from './users.controller';
 jest.mock('../helpers/auth');
 describe('Given the UsersController', () => {
@@ -130,7 +129,7 @@ describe('Given the UsersController', () => {
           id: '2',
         },
       } as unknown as RequestWithToken;
-      (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({
+      mockRepoUsers.queryId.mockResolvedValue({
         addFoods: [{ id: '10' }, { id: '20' }],
       });
       (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ id: '2' });
@@ -184,8 +183,7 @@ describe('Given the UsersController', () => {
     (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({
       addFoods: [{ id: '10' }],
     });
-    (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({ id: '10' });
-
+    mockRepoUsers.queryId.mockResolvedValue({ id: '10' });
     await controller.addFavouriteFood(req, resp, next);
     expect(next).toHaveBeenCalled();
   });
@@ -199,7 +197,7 @@ describe('Given the UsersController', () => {
           id: '2',
         },
       } as unknown as RequestWithToken;
-      (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({
+      mockRepoUsers.queryId.mockResolvedValue({
         addFoods: [{ id: '1' }, { id: '2' }],
       });
       (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ id: '2' });
