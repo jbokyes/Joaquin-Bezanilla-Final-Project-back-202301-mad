@@ -25,15 +25,17 @@ export class FoodMongoRepo implements Repo<Food> {
 
   async create(food: Partial<Food>): Promise<Food> {
     debug('create-method');
+    debug('food', food);
     const data = await FoodModel.create(food);
+    debug(data);
     return data;
   }
 
   async update(food: Partial<Food>): Promise<Food> {
-    debug('update-method');
-    const data = await FoodModel.findByIdAndUpdate(food.foodId, food, {
+    const data = await FoodModel.findByIdAndUpdate(food.id, food, {
       new: true,
     }).exec();
+    debug(data);
     if (!data) throw new HTTPError(404, 'Not found', 'ID not found in update');
     return data;
   }
@@ -48,7 +50,6 @@ export class FoodMongoRepo implements Repo<Food> {
         'Delete not possible: ID not found'
       );
   }
-
   async search(query: { key: string; value: unknown }) {
     debug('search-method');
     const data = await FoodModel.find({ [query.key]: query.value }).exec();

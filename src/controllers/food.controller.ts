@@ -2,7 +2,7 @@ import { Repo } from '../repository/repo.interface';
 import createDebug from 'debug';
 import { NextFunction, Request, Response } from 'express';
 import { Food } from '../entities/food';
-import { HTTPError } from '../error/error';
+import { HTTPError } from '../error/error.js';
 
 const debug = createDebug('latino-foods:food-controller');
 
@@ -83,9 +83,10 @@ export class FoodsController {
   async edit(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('Edit method - food controller');
-      if (!req.params.foodId)
+      if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Food id not found in params');
-      req.body.id = req.params.foodId;
+      req.body.id = req.params.id;
+      debug(req.body.id);
       const foodData = await this.foodRepo.update(req.body);
       resp.status(201);
       resp.json({

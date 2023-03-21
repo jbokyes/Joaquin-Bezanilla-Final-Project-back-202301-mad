@@ -4,6 +4,7 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import { userRouter } from './routers/user.router.js';
 import { errorsMiddleware } from './middlewares/errors.middlewares.js';
+import { foodsRouter } from './routers/food.router.js';
 
 const debug = createDebug('latino-foods:app');
 debug('holaa');
@@ -17,7 +18,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use('/users', userRouter);
-app.use('/foods', userRouter);
+app.use('/foods', foodsRouter);
 app.get('/', (_req, resp) => {
   resp.json({
     info: "Bootcamp API's",

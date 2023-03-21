@@ -41,9 +41,7 @@ export class UsersController {
       };
       const token = Auth.createJWT(payload);
       resp.json({
-        results: {
-          token,
-        },
+        results: [token],
       });
       debug('Login done by: ' + req.body.email);
     } catch (error) {
@@ -83,7 +81,7 @@ export class UsersController {
       if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Didnt find food ID params');
       const foodToAdd = await this.foodRepo.queryId(req.params.id);
-      if (actualUser.addFoods.find((item) => item.foodId === foodToAdd.foodId))
+      if (actualUser.addFoods.find((item) => item.id === foodToAdd.id))
         throw new HTTPError(
           405,
           'This food plate already exists',
@@ -116,7 +114,7 @@ export class UsersController {
       if (!foodToRemove)
         throw new HTTPError(404, 'Food not found', 'Food ID not found');
       actualUser.addFoods = actualUser.addFoods.filter(
-        (item) => item.foodId !== foodToRemove.foodId
+        (item) => item.id !== foodToRemove.id
       );
       await this.userRepo.update(actualUser);
       resp.json({
