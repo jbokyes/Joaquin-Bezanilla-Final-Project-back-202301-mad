@@ -13,6 +13,7 @@ export abstract class Interceptors {
     try {
       debug('Logged');
       const authHeader = req.get('Authorization');
+      debug(authHeader);
       if (!authHeader)
         throw new HTTPError(498, 'Invalid token', 'No value in auth header');
       if (!authHeader.startsWith('Bearer'))

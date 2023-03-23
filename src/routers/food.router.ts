@@ -15,18 +15,14 @@ const controller = new FoodsController(foodsRepo);
 
 foodsRouter.get('/', controller.getAll.bind(controller));
 foodsRouter.get('/:id', controller.getId.bind(controller));
-foodsRouter.post(
-  '/',
-  //Interceptors.logged,
-  controller.post.bind(controller)
-);
+foodsRouter.post('/add', Interceptors.logged, controller.post.bind(controller));
 foodsRouter.patch(
   '/edit/:id',
-  // Interceptors.logged,
+  Interceptors.logged,
   controller.edit.bind(controller)
 );
 foodsRouter.delete(
-  '/delete/:id',
+  '/:id',
   Interceptors.logged,
   controller.delete.bind(controller)
 );

@@ -99,9 +99,9 @@ export class FoodsController {
   async delete(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('Delete-method food controller');
-      if (!req.params.foodId)
+      if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Food id not found in params');
-      await this.foodRepo.delete(req.params.foodId);
+      await this.foodRepo.delete(req.params.id);
       resp.status(201);
       resp.json({
         results: [],

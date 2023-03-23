@@ -53,6 +53,10 @@ export class FoodMongoRepo implements Repo<Food> {
   async search(query: { key: string; value: unknown }) {
     debug('search-method');
     const data = await FoodModel.find({ [query.key]: query.value }).exec();
-    return data;
+    const result = data.map((item: any) => ({
+      ...item._doc,
+      id: item._id.toString(),
+    }));
+    return result;
   }
 }

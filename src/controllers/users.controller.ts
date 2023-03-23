@@ -41,7 +41,8 @@ export class UsersController {
       };
       const token = Auth.createJWT(payload);
       resp.json({
-        results: [token],
+        token,
+        results: [data[0]],
       });
       debug('Login done by: ' + req.body.email);
     } catch (error) {
