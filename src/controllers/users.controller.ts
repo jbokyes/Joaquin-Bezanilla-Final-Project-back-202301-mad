@@ -17,21 +17,16 @@ export class UsersController {
   async login(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('Login-post');
-      // const { email, passwd } = req.body;
       if (!req.body.email || !req.body.passwd)
         throw new HTTPError(403, 'Unauthorized', 'Invalid email or password');
+      console.log('console loguito data ');
       const data = await this.userRepo.search({
         key: 'email',
         value: req.body.email,
       });
+
       if (!data.length)
         throw new HTTPError(401, 'Unauthorized', 'Email not found');
-      debug('!datalength error');
-      console.log(req.body.passwd, data[0].passwd);
-      console.log(
-        'compare',
-        await Auth.compare(req.body.passwd, data[0].passwd)
-      );
       if (!(await Auth.compare(req.body.passwd, data[0].passwd)))
         throw new HTTPError(401, 'Unauthorized', 'Password not found');
       const payload: PayloadToken = {
@@ -40,6 +35,7 @@ export class UsersController {
         role: 'user',
       };
       const token = Auth.createJWT(payload);
+      resp.status(205);
       resp.json({
         token,
         results: [data[0]],
@@ -61,7 +57,7 @@ export class UsersController {
       req.body.passwd = await Auth.hash(req.body.passwd);
       req.body.addFoods = [];
       const data = await this.userRepo.create(req.body);
-      console.log(data);
+      resp.status(202);
       resp.json({
         results: [data],
       });

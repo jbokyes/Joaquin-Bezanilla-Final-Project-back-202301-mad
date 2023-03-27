@@ -40,7 +40,7 @@ describe('Given the controller FoodsController', () => {
     test('Then if there is req.body.region is All, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
-          region: 'none',
+          region: 'all',
         },
       } as unknown as Request;
       (mockFoodRepo.search as jest.Mock).mockRejectedValueOnce('No food info');
@@ -69,16 +69,29 @@ describe('Given the controller FoodsController', () => {
     ]);
 
     (mockFoodRepo.search as jest.Mock).mockResolvedValue([
-      { id: '1' },
+      { id: '1', region: 'chile' },
       { id: '2' },
       { id: '3' },
     ]);
 
-    test('Then if the food information is completed, it should return the resp.status and resp.json', async () => {
+    test('Then if the food information is completed and has a specific region, it should return the resp.status and resp.json', async () => {
       const req = {
         query: {
           page: '1',
-          region: 'Chile',
+          region: 'chile',
+        },
+      } as unknown as Request;
+
+      await controller.getAll(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+      expect(mockFoodRepo.search).toHaveBeenCalled();
+    });
+    test('Then if the food information is completed and has a specific region, it should return the resp.status and resp.json', async () => {
+      const req = {
+        query: {
+          page: '1',
+          region: 'all',
         },
       } as unknown as Request;
 
@@ -164,7 +177,7 @@ describe('Given the controller FoodsController', () => {
           id: '50',
         },
         params: {
-          foodId: '50',
+          id: '50',
         },
       } as unknown as Request;
 
@@ -186,7 +199,7 @@ describe('Given the controller FoodsController', () => {
     test('Then if the user information is complete, it should return the resp.status and resp.json', async () => {
       const req = {
         params: {
-          foodId: '30',
+          id: '30',
         },
       } as unknown as Request;
 
