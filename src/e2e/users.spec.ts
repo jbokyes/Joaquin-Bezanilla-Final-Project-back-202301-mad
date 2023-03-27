@@ -61,5 +61,29 @@ describe('Given the REST Api with a /users path and a connection with MongoDB', 
       const response = await request(app).post('/users/login').send(loginMock);
       expect(response.status).toBe(205);
     });
+    test('Then if the password is missing (or wrong), the status code should be 401', async () => {
+      const registerMock = {
+        email: 'super@test.cl',
+        passwd: 'joaquincito1234',
+        username: 'JOAQUIN_XD',
+      };
+      const errorLoginMock = {
+        email: 'super@test.cl',
+        passwd: 'joaquincito123',
+      };
+      await request(app).post('/users/register').send(registerMock);
+      const response = await request(app)
+        .post('/users/login')
+        .send(errorLoginMock);
+      expect(response.status).toBe(401);
+    });
+    test('Then if the email is not found in the database, the status should be 401', async () => {
+      const loginMock = {
+        email: 'joaquin@testquenoencontramos',
+        password: 'literallydoesntmatter',
+      };
+      const response = await request(app).post('/users/login').send(loginMock);
+      expect(response.status).toBe(401);
+    });
   });
 });

@@ -18,13 +18,12 @@ export class UsersController {
     try {
       debug('Login-post');
       if (!req.body.email || !req.body.passwd)
-        throw new HTTPError(403, 'Unauthorized', 'Invalid email or password');
+        throw new HTTPError(401, 'Unauthorized', 'Invalid email or password');
       console.log('console loguito data ');
       const data = await this.userRepo.search({
         key: 'email',
         value: req.body.email,
       });
-
       if (!data.length)
         throw new HTTPError(401, 'Unauthorized', 'Email not found');
       if (!(await Auth.compare(req.body.passwd, data[0].passwd)))
