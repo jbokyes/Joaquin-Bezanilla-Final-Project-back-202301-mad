@@ -13,12 +13,13 @@ const foodSchema = new Schema<Food>({
   diet: {
     type: String,
   },
-  info: {
-    type: String,
-  },
   region: {
     type: String,
   },
+  info: {
+    type: String,
+  },
+
   img: {
     type: String,
   },

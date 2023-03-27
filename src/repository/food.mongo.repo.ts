@@ -25,7 +25,6 @@ export class FoodMongoRepo implements Repo<Food> {
 
   async create(food: Partial<Food>): Promise<Food> {
     debug('create-method');
-    debug('food', food);
     const data = await FoodModel.create(food);
     debug(data);
     return data;

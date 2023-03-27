@@ -16,6 +16,7 @@ export class FoodsController {
     try {
       debug('post-method');
       const newFood = req.body;
+      debug(newFood);
       const data = await this.foodRepo.create(newFood);
       resp.status(201);
       resp.json({
@@ -33,18 +34,19 @@ export class FoodsController {
       const pageNumber = Number(pageString);
       if (pageNumber < 1 || pageNumber > 10)
         throw new HTTPError(400, 'Wrong page number', 'Page <1 or >10');
-      const region = req.query.region || 'All';
+      const region = req.query.region || 'all';
       if (
-        region !== 'Chile' &&
-        region !== 'Argentina' &&
-        region !== 'Brazil' &&
-        region !== 'Mexico' &&
-        region !== 'Peru' &&
-        region !== 'All'
+        region !== 'chile' &&
+        region !== 'argentina' &&
+        region !== 'brazil' &&
+        region !== 'mexico' &&
+        region !== 'peru' &&
+        region !== 'all'
       )
         throw new HTTPError(400, 'Wrong region', 'Non existing region');
       var filteredFood: Food[];
-      if (region === 'All') {
+      debug(region);
+      if (region === 'all') {
         filteredFood = await this.foodRepo.queryAll();
       } else {
         filteredFood = await this.foodRepo.search({
@@ -53,8 +55,8 @@ export class FoodsController {
         });
       }
       const foodData = filteredFood.slice(
-        (pageNumber - 1) * 10,
-        pageNumber * 10
+        (pageNumber - 1) * 12,
+        pageNumber * 12
       );
       resp.status(201);
       resp.json({
