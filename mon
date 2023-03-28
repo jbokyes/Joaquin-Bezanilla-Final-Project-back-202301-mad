@@ -2,4 +2,4 @@
 > week6@1.0.0 start
 > cross-env DEBUG=latino-foods* PORT=4200 node ./dist/index.js
 
-Terminate batch job (Y/N)? Terminate batch job (Y/N)? 
+Terminate batch job (Y/N)? Terminate batch job (Y/N)?

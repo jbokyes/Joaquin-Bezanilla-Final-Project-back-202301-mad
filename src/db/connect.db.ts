@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { config } from '../config.js';
-const { user, password, cluster, name } = config;
+const { user, password, cluster } = config;
 
 export const dbConnect = () => {
   const dbName =
