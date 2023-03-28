@@ -176,7 +176,7 @@ describe('Given the UsersController', () => {
         id: '40',
       },
     } as unknown as RequestWithToken;
-    (mockRepoUsers.queryId as jest.Mock).mockResolvedValue({
+    mockRepoUsers.queryId.mockResolvedValue({
       addFoods: [{ id: 40 }],
     });
     (mockRepoFoods.queryId as jest.Mock).mockResolvedValue([{ id: '40' }]);
