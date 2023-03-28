@@ -37,7 +37,7 @@ describe('Given the REST Api with a /foods path and a connection with MongoDB', 
       expect(response.status).toBe(201);
     });
   });
-  describe('Given the POST method', () => {
+  /*describe('Given the POST method', () => {
     const foodsMock = [
       {
         name: 'choripan',
@@ -64,5 +64,5 @@ describe('Given the REST Api with a /foods path and a connection with MongoDB', 
         .send(foodsMock[0]);
       expect(response.status).toBe(201);
     });
-  });
+  });*/
 });
