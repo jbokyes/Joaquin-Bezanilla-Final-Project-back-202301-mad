@@ -14,19 +14,15 @@ const userRepo = new UsersMongoRepo();
 const controller = new FoodsController(foodsRepo);
 
 foodsRouter.get('/', controller.getAll.bind(controller));
-foodsRouter.get('/:foodId', controller.getId.bind(controller));
-foodsRouter.post(
-  '/create',
-  Interceptors.logged,
-  controller.post.bind(controller)
-);
+foodsRouter.get('/:id', controller.getId.bind(controller));
+foodsRouter.post('/add', Interceptors.logged, controller.post.bind(controller));
 foodsRouter.patch(
-  '/edit/:foodId',
+  '/edit/:id',
   Interceptors.logged,
   controller.edit.bind(controller)
 );
 foodsRouter.delete(
-  '/delete/:foodId',
+  '/:id',
   Interceptors.logged,
   controller.delete.bind(controller)
 );

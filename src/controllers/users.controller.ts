@@ -1,11 +1,11 @@
 import createDebug from 'debug';
 import { NextFunction, Response, Request } from 'express';
-import { Food } from '../entities/food';
-import { User } from '../entities/user';
+import { Food } from '../entities/food.js';
+import { User } from '../entities/user.js';
 import { HTTPError } from '../error/error.js';
 import { Auth, PayloadToken } from '../helpers/auth.js';
-import { RequestWithToken } from '../interceptors/interceptors';
-import { Repo } from '../repository/repo.interface';
+import { RequestWithToken } from '../interceptors/interceptors.js';
+import { Repo } from '../repository/repo.interface.js';
 
 const debug = createDebug('latino-foods:users-controller');
 
@@ -17,21 +17,17 @@ export class UsersController {
   async login(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('Login-post');
-      // const { email, passwd } = req.body;
+      console.log(req.body);
       if (!req.body.email || !req.body.passwd)
-        throw new HTTPError(403, 'Unauthorized', 'Invalid email or password');
+        throw new HTTPError(401, 'Unauthorized', 'Invalid email or password');
       const data = await this.userRepo.search({
         key: 'email',
         value: req.body.email,
       });
+      debug('const data,', data);
       if (!data.length)
         throw new HTTPError(401, 'Unauthorized', 'Email not found');
-      debug('!datalength error');
       console.log(req.body.passwd, data[0].passwd);
-      console.log(
-        'compare',
-        await Auth.compare(req.body.passwd, data[0].passwd)
-      );
       if (!(await Auth.compare(req.body.passwd, data[0].passwd)))
         throw new HTTPError(401, 'Unauthorized', 'Password not found');
       const payload: PayloadToken = {
@@ -40,10 +36,10 @@ export class UsersController {
         role: 'user',
       };
       const token = Auth.createJWT(payload);
+      resp.status(201);
       resp.json({
-        results: {
-          token,
-        },
+        token,
+        results: [data[0]],
       });
       debug('Login done by: ' + req.body.email);
     } catch (error) {
@@ -62,7 +58,7 @@ export class UsersController {
       req.body.passwd = await Auth.hash(req.body.passwd);
       req.body.addFoods = [];
       const data = await this.userRepo.create(req.body);
-      console.log(data);
+      resp.status(202);
       resp.json({
         results: [data],
       });
@@ -83,7 +79,7 @@ export class UsersController {
       if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Didnt find food ID params');
       const foodToAdd = await this.foodRepo.queryId(req.params.id);
-      if (actualUser.addFoods.find((item) => item.foodId === foodToAdd.foodId))
+      if (actualUser.addFoods.find((item) => item.id === foodToAdd.id))
         throw new HTTPError(
           405,
           'This food plate already exists',
@@ -116,7 +112,7 @@ export class UsersController {
       if (!foodToRemove)
         throw new HTTPError(404, 'Food not found', 'Food ID not found');
       actualUser.addFoods = actualUser.addFoods.filter(
-        (item) => item.foodId !== foodToRemove.foodId
+        (item) => item.id !== foodToRemove.id
       );
       await this.userRepo.update(actualUser);
       resp.json({

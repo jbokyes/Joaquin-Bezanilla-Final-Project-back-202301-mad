@@ -1,8 +1,8 @@
-import { Repo } from '../repository/repo.interface';
+import { Repo } from '../repository/repo.interface.js';
 import createDebug from 'debug';
 import { NextFunction, Request, Response } from 'express';
-import { Food } from '../entities/food';
-import { HTTPError } from '../error/error';
+import { Food } from '../entities/food.js';
+import { HTTPError } from '../error/error.js';
 
 const debug = createDebug('latino-foods:food-controller');
 
@@ -16,6 +16,7 @@ export class FoodsController {
     try {
       debug('post-method');
       const newFood = req.body;
+      debug(newFood);
       const data = await this.foodRepo.create(newFood);
       resp.status(201);
       resp.json({
@@ -33,18 +34,19 @@ export class FoodsController {
       const pageNumber = Number(pageString);
       if (pageNumber < 1 || pageNumber > 10)
         throw new HTTPError(400, 'Wrong page number', 'Page <1 or >10');
-      const region = req.query.region || 'All';
+      const region = req.query.region || 'all';
       if (
-        region !== 'Chile' &&
-        region !== 'Argentina' &&
-        region !== 'Brazil' &&
-        region !== 'Mexico' &&
-        region !== 'Peru' &&
-        region !== 'All'
+        region !== 'chile' &&
+        region !== 'argentina' &&
+        region !== 'brazil' &&
+        region !== 'mexico' &&
+        region !== 'peru' &&
+        region !== 'all'
       )
         throw new HTTPError(400, 'Wrong region', 'Non existing region');
       var filteredFood: Food[];
-      if (region === 'All') {
+      debug(region);
+      if (region === 'all') {
         filteredFood = await this.foodRepo.queryAll();
       } else {
         filteredFood = await this.foodRepo.search({
@@ -53,8 +55,8 @@ export class FoodsController {
         });
       }
       const foodData = filteredFood.slice(
-        (pageNumber - 1) * 10,
-        pageNumber * 10
+        (pageNumber - 1) * 12,
+        pageNumber * 12
       );
       resp.status(201);
       resp.json({
@@ -83,9 +85,10 @@ export class FoodsController {
   async edit(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('Edit method - food controller');
-      if (!req.params.foodId)
+      if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Food id not found in params');
-      req.body.id = req.params.foodId;
+      req.body.id = req.params.id;
+      debug(req.body.id);
       const foodData = await this.foodRepo.update(req.body);
       resp.status(201);
       resp.json({
@@ -98,9 +101,9 @@ export class FoodsController {
   async delete(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('Delete-method food controller');
-      if (!req.params.foodId)
+      if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Food id not found in params');
-      await this.foodRepo.delete(req.params.foodId);
+      await this.foodRepo.delete(req.params.id);
       resp.status(201);
       resp.json({
         results: [],

@@ -22,7 +22,6 @@ describe('Given the UsersController', () => {
     status: jest.fn(),
     json: jest.fn(),
   } as unknown as Response;
-  const req = {} as unknown as Request;
   const next = jest.fn();
   describe('When the register method is called', () => {
     test('And all the data is correctly introduced, there should be a status and a json response', async () => {
@@ -39,7 +38,7 @@ describe('Given the UsersController', () => {
     test('And the email is missing, next function will be called', async () => {
       const req = {
         body: {
-          password: 'pa',
+          passwd: 'pa',
         },
       } as unknown as Request;
       mockRepoUsers.create.mockRejectedValue('error');
@@ -83,11 +82,11 @@ describe('Given the UsersController', () => {
       await controller.login(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
-    test('There it should be an HTTPError if there is no data', async () => {
+    test('There it should be an HTTPError if search doesnt find the data', async () => {
       const req = {
         body: {
-          email: 'test1',
-          password: 'pass',
+          email: 'joaquin@chile.cl',
+          passwd: 'HOLAJOAQUIN123',
         },
       } as unknown as Request;
       mockRepoUsers.search.mockResolvedValue([]);
@@ -99,16 +98,26 @@ describe('Given the UsersController', () => {
       const req = {
         body: {
           email: 'pep',
-          password: 'pass',
+          passwd: 'pass',
         },
       } as unknown as Request;
       Auth.compare = jest.fn().mockResolvedValue(false);
-      mockRepoUsers.search.mockResolvedValue([]);
+      mockRepoUsers.search.mockResolvedValue([1]);
       await controller.login(req, resp, next);
       expect(mockRepoUsers.search).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
     test('And the password is missing, next function will be called', async () => {
+      const req = {
+        body: {
+          email: 'test',
+        },
+      } as unknown as Request;
+      mockRepoUsers.search.mockRejectedValue('error');
+      await controller.login(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('And auth.compare returns false, next function will be called', async () => {
       const req = {
         body: {
           email: 'test',
@@ -167,7 +176,10 @@ describe('Given the UsersController', () => {
         id: '40',
       },
     } as unknown as RequestWithToken;
-    (mockRepoFoods.queryId as jest.Mock).mockResolvedValue(undefined);
+    mockRepoUsers.queryId.mockResolvedValue({
+      addFoods: [{ id: 40 }],
+    });
+    (mockRepoFoods.queryId as jest.Mock).mockResolvedValue([{ id: '40' }]);
     await controller.addFavouriteFood(req, resp, next);
     expect(next).toHaveBeenCalled();
   });
@@ -183,7 +195,7 @@ describe('Given the UsersController', () => {
     mockRepoUsers.queryId.mockResolvedValue({
       addFoods: [{ id: '10' }],
     });
-    mockRepoUsers.queryId.mockResolvedValue({ id: '10' });
+    (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ id: '10' });
     await controller.addFavouriteFood(req, resp, next);
     expect(next).toHaveBeenCalled();
   });
