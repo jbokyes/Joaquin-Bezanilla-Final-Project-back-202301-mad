@@ -59,7 +59,7 @@ describe('Given the REST Api with a /users path and a connection with MongoDB', 
       };
       await request(app).post('/users/register').send(registerMock);
       const response = await request(app).post('/users/login').send(loginMock);
-      expect(response.status).toBe(205);
+      expect(response.status).toBe(201);
     });
     test('Then if the password is missing (or wrong), the status code should be 401', async () => {
       const registerMock = {
