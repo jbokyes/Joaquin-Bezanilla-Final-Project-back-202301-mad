@@ -4,7 +4,8 @@ import { app } from '../app';
 import { dbConnect } from '../db/connect.db';
 import { FoodModel } from '../repository/food.mongo.model';
 import { Auth, PayloadToken } from '../helpers/auth';
-
+import { User } from '../entities/user';
+import { UserModel } from '../repository/user.mongo.model';
 const setFoodCollection = async () => {
   const foodsMock = [
     {
@@ -30,10 +31,30 @@ const setFoodCollection = async () => {
   const mockFoodIds = [foodData[0].id, foodData[1].id];
   return mockFoodIds;
 };
+const mockUsers = [
+  {
+    username: 'Ryan',
+    email: 'ryan@gmail.com',
+    passwd: '1234',
+  },
+  {
+    username: 'Gonzalo',
+    email: 'gonzu@gmail.com',
+    passwd: '9876',
+  },
+];
+const setUserCollection = async () => {
+  await UserModel.deleteMany();
+  await UserModel.insertMany(mockUsers);
+  const dataUser = await UserModel.find();
+  const userIds = [dataUser[0].id, dataUser[1].id];
+  return userIds;
+};
 describe('Given the REST Api with a /foods path and a connection with MongoDB', () => {
   beforeEach(async () => {
     await dbConnect();
-    const mockUsersId = await setFoodCollection();
+    const mockUsersId = await setUserCollection();
+    const mockFoodsId = await setFoodCollection();
   });
   afterEach(async () => {
     await mongoose.disconnect();
