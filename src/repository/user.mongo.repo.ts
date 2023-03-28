@@ -1,7 +1,7 @@
 import createDebug from 'debug';
 import { UserModel } from './user.mongo.model.js';
 import { User } from '../entities/user.js';
-import { Repo } from './repo.interface';
+import { Repo } from './repo.interface.js';
 import { HTTPError } from '../error/error.js';
 
 const debug = createDebug('Latino:user-mongo-repo');
@@ -32,6 +32,7 @@ export class UsersMongoRepo implements Repo<User> {
   async search(query: { key: string; value: unknown }): Promise<User[]> {
     debug('search');
     const data = UserModel.find({ [query.key]: query.value });
+    console.log('data repo');
     return data;
   }
 

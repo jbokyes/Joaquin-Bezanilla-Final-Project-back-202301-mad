@@ -1,11 +1,11 @@
 import createDebug from 'debug';
 import { NextFunction, Response, Request } from 'express';
-import { Food } from '../entities/food';
-import { User } from '../entities/user';
+import { Food } from '../entities/food.js';
+import { User } from '../entities/user.js';
 import { HTTPError } from '../error/error.js';
 import { Auth, PayloadToken } from '../helpers/auth.js';
-import { RequestWithToken } from '../interceptors/interceptors';
-import { Repo } from '../repository/repo.interface';
+import { RequestWithToken } from '../interceptors/interceptors.js';
+import { Repo } from '../repository/repo.interface.js';
 
 const debug = createDebug('latino-foods:users-controller');
 
@@ -17,15 +17,17 @@ export class UsersController {
   async login(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('Login-post');
+      console.log(req.body);
       if (!req.body.email || !req.body.passwd)
         throw new HTTPError(401, 'Unauthorized', 'Invalid email or password');
-      console.log('console loguito data ');
       const data = await this.userRepo.search({
         key: 'email',
         value: req.body.email,
       });
+      debug('const data,', data);
       if (!data.length)
         throw new HTTPError(401, 'Unauthorized', 'Email not found');
+      console.log(req.body.passwd, data[0].passwd);
       if (!(await Auth.compare(req.body.passwd, data[0].passwd)))
         throw new HTTPError(401, 'Unauthorized', 'Password not found');
       const payload: PayloadToken = {
@@ -34,7 +36,7 @@ export class UsersController {
         role: 'user',
       };
       const token = Auth.createJWT(payload);
-      resp.status(205);
+      resp.status(201);
       resp.json({
         token,
         results: [data[0]],

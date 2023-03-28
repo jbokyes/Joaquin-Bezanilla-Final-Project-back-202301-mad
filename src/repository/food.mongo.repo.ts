@@ -1,6 +1,6 @@
-import { Food } from '../entities/food';
+import { Food } from '../entities/food.js';
 import { HTTPError } from '../error/error.js';
-import { Repo } from './repo.interface';
+import { Repo } from './repo.interface.js';
 import { FoodModel } from './food.mongo.model.js';
 import createDebug from 'debug';
 const debug = createDebug('latino-foods:food-repo');

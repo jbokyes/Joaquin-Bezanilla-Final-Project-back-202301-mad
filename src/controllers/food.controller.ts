@@ -1,7 +1,7 @@
-import { Repo } from '../repository/repo.interface';
+import { Repo } from '../repository/repo.interface.js';
 import createDebug from 'debug';
 import { NextFunction, Request, Response } from 'express';
-import { Food } from '../entities/food';
+import { Food } from '../entities/food.js';
 import { HTTPError } from '../error/error.js';
 
 const debug = createDebug('latino-foods:food-controller');
