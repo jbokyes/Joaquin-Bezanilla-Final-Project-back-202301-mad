@@ -22,6 +22,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_CLUSTER: ${{ secrets.DB_CLUSTER }}
           DB_NAME: ${{secrets.DB_NAME}}
+          SECRET: ${{secrets.SECRET}}
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
