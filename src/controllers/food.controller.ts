@@ -16,7 +16,7 @@ export class FoodsController {
     try {
       debug('post-method');
       const newFood = req.body;
-      debug(newFood);
+      debug('Food controller Post: ', newFood);
       const data = await this.foodRepo.create(newFood);
       resp.status(201);
       resp.json({
@@ -88,7 +88,7 @@ export class FoodsController {
       if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Food id not found in params');
       req.body.id = req.params.id;
-      debug(req.body.id);
+      debug('Edit method - food controller : ', req.body.id);
       const foodData = await this.foodRepo.update(req.body);
       resp.status(201);
       resp.json({
