@@ -32,7 +32,6 @@ export class UsersMongoRepo implements Repo<User> {
   async search(query: { key: string; value: unknown }): Promise<User[]> {
     debug('search');
     const data = UserModel.find({ [query.key]: query.value });
-    console.log('data repo');
     return data;
   }
 

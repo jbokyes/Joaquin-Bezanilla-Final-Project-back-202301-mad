@@ -23,7 +23,6 @@ const foodSchema = new Schema<Food>({
   img: {
     type: String,
   },
-  // Puede que falte el creador del plato
 });
 foodSchema.set('toJSON', {
   transform(_document, returnedObject) {

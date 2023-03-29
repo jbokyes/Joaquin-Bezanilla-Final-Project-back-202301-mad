@@ -16,18 +16,16 @@ export class UsersController {
 
   async login(req: Request, resp: Response, next: NextFunction) {
     try {
-      debug('Login-post');
-      console.log(req.body);
+      debug('Login-post: Users controller');
       if (!req.body.email || !req.body.passwd)
         throw new HTTPError(401, 'Unauthorized', 'Invalid email or password');
       const data = await this.userRepo.search({
         key: 'email',
         value: req.body.email,
       });
-      debug('const data,', data);
+      debug('login data: ', data);
       if (!data.length)
         throw new HTTPError(401, 'Unauthorized', 'Email not found');
-      console.log(req.body.passwd, data[0].passwd);
       if (!(await Auth.compare(req.body.passwd, data[0].passwd)))
         throw new HTTPError(401, 'Unauthorized', 'Password not found');
       const payload: PayloadToken = {
@@ -52,9 +50,6 @@ export class UsersController {
       if (!req.body.email || !req.body.passwd) {
         throw new HTTPError(403, 'Unauthorized', 'Invalid email or password');
       }
-      console.log(req.body.email, req.body.passwd, req.body.username);
-      // Console log de verificación
-      // console.log(await Auth.hash(req.body.passwd));
       req.body.passwd = await Auth.hash(req.body.passwd);
       req.body.addFoods = [];
       const data = await this.userRepo.create(req.body);
@@ -72,19 +67,12 @@ export class UsersController {
     next: NextFunction
   ) {
     try {
-      console.log('addFavourite food controller');
       debug('Controller adding favourite');
       if (!req.tokenInfo)
         throw new HTTPError(498, 'Token not found', 'No token available');
       const actualUser = await this.userRepo.queryId(req.tokenInfo.id);
-      console.log('actual user', actualUser);
-
-      console.log('req.tokeninfo', req.tokenInfo);
-      console.log('req.params: ', req.params);
       if (!req.params.foodId)
         throw new HTTPError(404, 'Not found', 'Didnt find food ID params');
-
-      console.log('paso');
       const foodToAdd = await this.foodRepo.queryId(req.params.foodId);
       if (actualUser.addFoods.find((item) => item.id === foodToAdd.id))
         throw new HTTPError(
