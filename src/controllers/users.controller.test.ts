@@ -135,13 +135,13 @@ describe('Given the UsersController', () => {
           id: '10',
         },
         params: {
-          id: '20',
+          foodId: '20',
         },
       } as unknown as RequestWithToken;
       mockRepoUsers.queryId.mockResolvedValue({
         addFoods: [{ id: '1' }],
       });
-      (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ foodId: '10' });
+      (mockRepoFoods.queryId as jest.Mock).mockResolvedValue({ id: '10' });
       await controller.addFavouriteFood(req, resp, next);
       expect(mockRepoUsers.update).toHaveBeenCalled();
       expect(resp.status).toHaveBeenCalled();
