@@ -72,13 +72,20 @@ export class UsersController {
     next: NextFunction
   ) {
     try {
+      console.log('addFavourite food controller');
       debug('Controller adding favourite');
       if (!req.tokenInfo)
         throw new HTTPError(498, 'Token not found', 'No token available');
       const actualUser = await this.userRepo.queryId(req.tokenInfo.id);
-      if (!req.params.id)
+      console.log('actual user', actualUser);
+
+      console.log('req.tokeninfo', req.tokenInfo);
+      console.log('req.params: ', req.params);
+      if (!req.params.foodId)
         throw new HTTPError(404, 'Not found', 'Didnt find food ID params');
-      const foodToAdd = await this.foodRepo.queryId(req.params.id);
+
+      console.log('paso');
+      const foodToAdd = await this.foodRepo.queryId(req.params.foodId);
       if (actualUser.addFoods.find((item) => item.id === foodToAdd.id))
         throw new HTTPError(
           405,
